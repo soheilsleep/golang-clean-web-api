@@ -1,6 +1,6 @@
 server:
-  Port: 5005
-  RunMode: debug
+  port: 5005
+  runMode: debug
 logger:
   filePath: ../logs/logs.log
   Encoding: json
@@ -8,14 +8,14 @@ logger:
 cors:
   allowOrigins: "*"
 postgres:
-  host: localhost
+  host: postgres_container
   port: 5432
   user: postgres
   password: admin
   dbName: car_sale_db
   sslMode: false
 redis:
-  host: localhost
+  host: redis_container
   port: 6379
   password: password
   db: 0
