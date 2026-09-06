@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
+	"github.com/soheilsleep/golang-clean-web-api/api/middlewares"
 	"github.com/soheilsleep/golang-clean-web-api/api/routers"
 	"github.com/soheilsleep/golang-clean-web-api/api/validations"
 	"github.com/soheilsleep/golang-clean-web-api/config"
@@ -19,7 +20,7 @@ func InitServer() {
 		val.RegisterValidation("mobile", validations.IranianMobileNumberValidator, true)
 		val.RegisterValidation("password", validations.PasswordValidator, true)
 	}
-	r.Use(gin.Recovery(), gin.Logger() /*middlewares.TestMiddleware()*/)
+	r.Use(gin.Recovery(), gin.Logger(), middlewares.LimitByRequest() /*middlewares.TestMiddleware()*/)
 	api := r.Group("/api")
 	v1 := api.Group("/v1/")
 	{
