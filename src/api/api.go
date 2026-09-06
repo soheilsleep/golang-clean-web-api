@@ -20,6 +20,7 @@ func InitServer() {
 		val.RegisterValidation("mobile", validations.IranianMobileNumberValidator, true)
 		val.RegisterValidation("password", validations.PasswordValidator, true)
 	}
+	r.Use(middlewares.Cors(cfg))
 	r.Use(gin.Recovery(), gin.Logger(), middlewares.LimitByRequest() /*middlewares.TestMiddleware()*/)
 	api := r.Group("/api")
 	v1 := api.Group("/v1/")

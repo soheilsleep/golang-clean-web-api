@@ -13,6 +13,7 @@ type Config struct {
 	Postgres PostgresConfig `yaml:"postgres"`
 	Redis    RedisConfig    `yaml:"redis"`
 	Password PasswordConfig `yaml:"password"`
+	Cors     CorsConfig     `yaml:"cors"`
 }
 type ServerConfig struct {
 	Port    string
@@ -42,6 +43,9 @@ type PasswordConfig struct {
 	MaxLength        int
 	IncludeUppercase bool
 	IncludeLowercase bool
+}
+type CorsConfig struct {
+	AllowOrigins string
 }
 
 func GetConfig() *Config {

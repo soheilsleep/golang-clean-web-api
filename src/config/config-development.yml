@@ -14,6 +14,7 @@ postgres:
   password: admin
   dbName: car_sale_db
   sslMode: false
+
 redis:
   host: localhost
   port: 6379
