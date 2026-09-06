@@ -27,4 +27,4 @@ jobs:
     - name: Build
       run: |
         cd src
-        go build -v ./cmd/main
+        go build -v -o app ./cmd
