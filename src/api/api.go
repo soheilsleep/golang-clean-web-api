@@ -16,12 +16,10 @@ func InitServer() {
 	r := gin.New()
 	val, ok := binding.Validator.Engine().(*validator.Validate)
 	if ok {
-		err := val.RegisterValidation("mobile", validations.IranianMobileNumberValidator, true)
-		if err != nil {
-			err.Error()
-		}
+		val.RegisterValidation("mobile", validations.IranianMobileNumberValidator, true)
+		val.RegisterValidation("password", validations.PasswordValidator, true)
 	}
-	r.Use(gin.Recovery(), gin.Logger())
+	r.Use(gin.Recovery(), gin.Logger() /*middlewares.TestMiddleware()*/)
 	api := r.Group("/api")
 	v1 := api.Group("/v1/")
 	{

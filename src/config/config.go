@@ -12,6 +12,7 @@ type Config struct {
 	Server   ServerConfig   `yaml:"server"`
 	Postgres PostgresConfig `yaml:"postgres"`
 	Redis    RedisConfig    `yaml:"redis"`
+	Password PasswordConfig `yaml:"password"`
 }
 type ServerConfig struct {
 	Port    string
@@ -33,6 +34,14 @@ type RedisConfig struct {
 	MinIdleConnection int
 	PoolSize          int
 	PoolTimeout       int
+}
+type PasswordConfig struct {
+	IncludeChars     bool
+	IncludeDigits    bool
+	MinLength        int
+	MaxLength        int
+	IncludeUppercase bool
+	IncludeLowercase bool
 }
 
 func GetConfig() *Config {
