@@ -5,10 +5,11 @@ import (
 	"github.com/soheilsleep/golang-clean-web-api/common"
 )
 
-func IranianMobileNumberValidator(fld validator.FieldLevel) bool {
+func PasswordValidator(fld validator.FieldLevel) bool {
 	value, ok := fld.Field().Interface().(string)
 	if !ok {
+		fld.Param()
 		return false
 	}
-	return common.IranianMobileNumberValidate(value)
+	return common.CheckPassword(value)
 }
