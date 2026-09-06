@@ -13,8 +13,9 @@ type header struct {
 	Browser string
 }
 type personData struct {
-	FirstName string
-	LastName  string
+	FirstName    string `json:"first_name" binding:"required,min=4,alpha,max=10"`
+	LastName     string `json:"last_name" binding:"required,min=5,alpha,max=20"`
+	MobileNumber string `json:"mobile_number" binding:"required,mobile,min=11,max=11"`
 }
 
 func NewTestHandler() *TestHandler {
@@ -104,7 +105,14 @@ func (handler *TestHandler) UriBinder(c *gin.Context) {
 }
 func (handler *TestHandler) BodyBinder(c *gin.Context) {
 	p := personData{}
-	c.ShouldBindJSON(&p)
+	err := c.ShouldBindJSON(&p)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"validationError": err.Error(),
+
+		})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"result": "BodyBinder",
 		"Person": p,
