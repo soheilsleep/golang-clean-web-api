@@ -20,9 +20,12 @@ redis:
   port: 6379
   password: password
   db: 0
-  minIdleConnection: 100
-  poolSize: 5000
-  poolTimeout: 240
+  dialTimeout: 5
+  writeTimeout: 5
+  readTimeout: 5
+  poolSize: 10
+  poolTimeout: 15
+  idleCheckFrequency: 50
 password:
   includeChars: true
   includeDigits: true

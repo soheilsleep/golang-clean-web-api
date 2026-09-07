@@ -12,16 +12,21 @@ import (
 	"github.com/soheilsleep/golang-clean-web-api/config"
 )
 
-func InitServer() {
-	cfg := config.GetConfig()
+func InitServer(cfg *config.Config) {
 	r := gin.New()
-	val, ok := binding.Validator.Engine().(*validator.Validate)
-	if ok {
-		val.RegisterValidation("mobile", validations.IranianMobileNumberValidator, true)
-		val.RegisterValidation("password", validations.PasswordValidator, true)
-	}
+	RegisterValidators()
 	r.Use(middlewares.Cors(cfg))
 	r.Use(gin.Recovery(), gin.Logger(), middlewares.LimitByRequest() /*middlewares.TestMiddleware()*/)
+	RegisterRoutes(r)
+	//err := r.Run(":5005")
+	err := r.Run(fmt.Sprintf(":%s", cfg.Server.Port))
+
+	if err != nil {
+		panic(err)
+	}
+}
+
+func RegisterRoutes(r *gin.Engine) {
 	api := r.Group("/api")
 	v1 := api.Group("/v1/")
 	{
@@ -30,11 +35,12 @@ func InitServer() {
 		routers.Health(health)
 		routers.TestRouter(test_router)
 	}
-	//err := r.Run(":5005")
-	err := r.Run(fmt.Sprintf(":%s", cfg.Server.Port))
+}
 
-	if err != nil {
-		panic(err)
+func RegisterValidators() {
+	val, ok := binding.Validator.Engine().(*validator.Validate)
+	if ok {
+		val.RegisterValidation("mobile", validations.IranianMobileNumberValidator, true)
+		val.RegisterValidation("password", validations.PasswordValidator, true)
 	}
-
 }
