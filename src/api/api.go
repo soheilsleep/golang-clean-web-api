@@ -10,6 +10,9 @@ import (
 	"github.com/soheilsleep/golang-clean-web-api/api/routers"
 	"github.com/soheilsleep/golang-clean-web-api/api/validations"
 	"github.com/soheilsleep/golang-clean-web-api/config"
+	"github.com/soheilsleep/golang-clean-web-api/docs"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func InitServer(cfg *config.Config) {
@@ -18,6 +21,7 @@ func InitServer(cfg *config.Config) {
 	r.Use(middlewares.Cors(cfg))
 	r.Use(gin.Recovery(), gin.Logger(), middlewares.LimitByRequest() /*middlewares.TestMiddleware()*/)
 	RegisterRoutes(r)
+	RegisterSwagger(r, cfg)
 	//err := r.Run(":5005")
 	err := r.Run(fmt.Sprintf(":%s", cfg.Server.Port))
 
@@ -43,4 +47,16 @@ func RegisterValidators() {
 		val.RegisterValidation("mobile", validations.IranianMobileNumberValidator, true)
 		val.RegisterValidation("password", validations.PasswordValidator, true)
 	}
+}
+
+func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
+	docs.SwaggerInfo.Title = "clean-web-api"
+	docs.SwaggerInfo.Description = "This is a clean-web-api."
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = fmt.Sprintf("localhost:%s", cfg.Server.Port)
+	docs.SwaggerInfo.BasePath = "/api"
+	docs.SwaggerInfo.Schemes = []string{"http"}
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 }
